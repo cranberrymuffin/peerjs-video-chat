@@ -23,135 +23,46 @@ const App: React.FC = () => {
         <svg width="600px" height="800px">
           <defs>
             <filter id="sobel" x="0%" y="0%" width="100%" height="100%">
-              {/* Convert source image to luminance map for Red Channel */}
+              {/* Convert source image to grayscale luminance map */}
               <feColorMatrix
                 in="SourceGraphic"
                 type="matrix"
-                values="0 0 0 0 1 
-                        0 0 0 0 1 
-                        0 0 0 0 1 
-                        1 0 0 0 0"
-                result="RChan"
+                values="0.2126 0.7152 0.0722 0 1
+                0.2126 0.7152 0.0722 0 1
+                0.2126 0.7152 0.0722 0 1
+                1     1     1     0 0"
+                result="luminance"
               />
 
-              {/* Convert source image to luminance map for Green Channel */}
-              <feColorMatrix
-                in="SourceGraphic"
-                type="matrix"
-                values="0 0 0 0 1 
-                        0 0 0 0 1 
-                        0 0 0 0 1 
-                        0 1 0 0 0"
-                result="GChan"
-              />
-
-              {/* Convert source image to luminance map for Blue Channel */}
-              <feColorMatrix
-                in="SourceGraphic"
-                type="matrix"
-                values="0 0 0 0 1 
-                        0 0 0 0 1 
-                        0 0 0 0 1 
-                        0 0 1 0 0"
-                result="BChan"
-              />
-
-              {/* Sobel edge detection for Red Channel */}
+              {/* Sobel edge detection for greyscale */}
               <feConvolveMatrix
-                in="RChan"
+                in="luminance"
                 order="3"
                 kernelMatrix="-1 -2 -1  
                                 0 0 0  
                                 1 2 1"
-                result="Rhor"
+                result="hor"
               />
               <feConvolveMatrix
-                in="RChan"
+                in="luminance"
                 order="3"
                 kernelMatrix="-1 0 1  
                                 -2 0 2  
                                 -1 0 1"
-                result="Rver"
+                result="ver"
               />
               <feComposite
                 operator="arithmetic"
                 k2="1"
                 k3="1"
-                in="Rhor"
-                in2="Rver"
-              />
-
-              {/* Sobel edge detection for Green Channel */}
-              <feConvolveMatrix
-                in="GChan"
-                order="3"
-                kernelMatrix="-1 -2 -1  
-                                0 0 0  
-                                1 2 1"
-                result="Ghor"
-              />
-              <feConvolveMatrix
-                in="GChan"
-                order="3"
-                kernelMatrix="-1 0 1  
-                                -2 0 2  
-                                -1 0 1"
-                result="Gver"
-              />
-              <feComposite
-                operator="arithmetic"
-                k2="1"
-                k3="1"
-                in="Ghor"
-                in2="Gver"
-              />
-
-              {/* Sobel edge detection for Blue Channel */}
-              <feConvolveMatrix
-                in="BChan"
-                order="3"
-                kernelMatrix="-1 -2 -1  
-                                0 0 0  
-                                1 2 1"
-                result="Bhor"
-              />
-              <feConvolveMatrix
-                in="BChan"
-                order="3"
-                kernelMatrix="-1 0 1  
-                                -2 0 2  
-                                -1 0 1"
-                result="Bver"
-              />
-              <feComposite
-                operator="arithmetic"
-                k2="1"
-                k3="1"
-                in="Bhor"
-                in2="Bver"
-              />
-
-              {/* Combine all channel edges */}
-              <feComposite
-                operator="arithmetic"
-                in="Rhor"
-                in2="Ghor"
-                k2="1"
-                k3="1"
-                result="finalEdge1"
-              />
-              <feComposite
-                operator="arithmetic"
-                in="finalEdge1"
-                in2="Bhor"
-                k2="1"
-                k3="1"
-                result="finaledges"
+                in="hor"
+                in2="ver"
+                result="edges"
               />
 
               {/* Set the final edges as the result */}
               <feFlood flood-color="black" result="black" />
-              <feComposite operator="over" in="finaledges" />
+              <feComposite operator="over" in="edges" />
             </filter>
           </defs>
 
