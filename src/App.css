@@ -1,0 +1,77 @@
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #2e3b4e;
+}
+
+input[type='file'] {
+  padding: 10px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+input[type='file']:hover {
+  border-color: #0056b3;
+}
+
+input[type='file']:focus {
+  outline: none;
+  border-color: #0056b3;
+}
+
+h3 {
+  font-size: 1.2rem;
+  color: #007bff;
+  margin-top: 20px;
+}
+
+svg {
+  display: block;
+  margin: 30px auto;
+  border-radius: 10px;
+  max-width: 100%;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  margin: 20px auto;
+}
+
+/* Image container styles */
+.image-container {
+  margin-top: 20px;
+  text-align: center;
+}
