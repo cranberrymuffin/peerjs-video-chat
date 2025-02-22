@@ -1,0 +1,132 @@
+/* Overall body background */
+body {
+  background-color: #ffe6f2; /* soft pastel pink */
+  font-family: 'Courier New', monospace;
+  margin: 0;
+}
+
+/* Full-screen container for the app */
+.app-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Full-screen ASCII art display */
+.ascii-art-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  white-space: pre-wrap;
+  font-family: 'Courier New', monospace;
+  font-size: 3px;
+  color: hotpink;
+  background-color: #fff0f6; /* pastel pink background */
+  border-radius: 15px;
+  padding: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* "Go Back" button */
+.go-back-btn {
+  font-family: 'Courier New', monospace;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #ff66b2; /* kawaii pink */
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.go-back-btn:hover {
+  background-color: #ff4da6;
+}
+
+/* Input and file selection container */
+.input-container {
+  text-align: center;
+  max-width: 400px;
+  background-color: #fff0f6;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+/* Group input field and button next to each other */
+.input-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Input field for URL */
+.input-field {
+  font-family: 'Courier New', monospace;
+  box-sizing: border-box;
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #ff99cc;
+  border-radius: 10px;
+  outline: none;
+}
+
+/* Process button */
+.process-btn {
+  font-family: 'Courier New', monospace;
+  padding: 10px 20px;
+  background-color: #ff66b2;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.process-btn:hover {
+  background-color: #ff4da6;
+}
+
+/* Hide actual file input */
+.file-input {
+  display: none;
+}
+
+/* Label styled as a button */
+.file-input-label {
+  display: inline-block;
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #ff66b2;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  box-sizing: border-box; /* Ensures the label does not overflow */
+}
+
+.file-input-label:hover {
+  background-color: #ff4da6;
+}
+
+pre {
+  font-family: 'Courier New', monospace;
+  line-height: 5px;
+  font-size: 8px;
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+  letter-spacing: 0px;
+  text-shadow: 1px 1px 2px hotpink;
+}

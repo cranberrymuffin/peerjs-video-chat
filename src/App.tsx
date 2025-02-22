@@ -1,88 +1,63 @@
 import React, { useState } from 'react';
+import AsciiArt from './components/AsciiArt';
+import ImageInput from './components/ImageInput';
+import Loading from './components/Loading';
+import { processImage } from './utils/imageProcessing';
+import './style.css';
 
-const App: React.FC = () => {
-  const [imageSrc, setImageSrc] = useState<string>('');
+const App = () => {
+  const [asciiArt, setAsciiArt] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [imageUrlInput, setImageUrlInput] = useState<string>('');
 
-  // Handle file upload
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const asciiChars: string[] = [
+    '@',
+    '%',
+    '#',
+    '*',
+    '+',
+    '=',
+    '-',
+    ':',
+    '.',
+    ' ',
+  ];
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
     if (file) {
-      const reader = new FileReader();
-      reader.onload = e => setImageSrc(e.target?.result as string);
-      reader.readAsDataURL(file);
+      processImage(file, setAsciiArt, setIsLoading, asciiChars);
     }
   };
 
+  const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setImageUrlInput(event.target.value);
+  };
+
+  const handleUrlSubmit = () => {
+    if (imageUrlInput) {
+      processImage(imageUrlInput, setAsciiArt, setIsLoading, asciiChars);
+    }
+  };
+
+  const handleBackToInput = () => {
+    setAsciiArt(null);
+    setImageUrlInput('');
+  };
+
   return (
-    <div style={{ textAlign: 'center' }}>
-      {/* File Upload Input */}
-      <input type="file" accept="image/*" onChange={handleFileUpload} />
-
-      {/* SVG Filter with Sobel */}
-      {imageSrc && (
-        <svg width="600px" height="800px">
-          <defs>
-            <filter id="sobel" x="0%" y="0%" width="100%" height="100%">
-              {/* Convert source image to grayscale luminance map */}
-              <feColorMatrix
-                in="SourceGraphic"
-                type="matrix"
-                values="0.2126 0.7152 0.0722 0 1
-                0.2126 0.7152 0.0722 0 1
-                0.2126 0.7152 0.0722 0 1
-                1     1     1     0 0"
-                result="luminance"
-              />
-
-              {/* Sobel edge detection for greyscale */}
-              <feConvolveMatrix
-                in="luminance"
-                order="3"
-                kernelMatrix="-1 -2 -1  
-                                0 0 0  
-                                1 2 1"
-                result="hor"
-              />
-              <feConvolveMatrix
-                in="luminance"
-                order="3"
-                kernelMatrix="-1 0 1  
-                                -2 0 2  
-                                -1 0 1"
-                result="ver"
-              />
-              <feComposite
-                operator="arithmetic"
-                k2="1"
-                k3="1"
-                in="hor"
-                in2="ver"
-                result="edges"
-              />
-
-              {/* Set the final edges as the result */}
-              <feFlood flood-color="black" result="black" />
-              <feComposite operator="over" in="edges" />
-            </filter>
-          </defs>
-
-          {/* Display original image */}
-          <image
-            width="400"
-            height="300"
-            preserveAspectRatio="xMinYMin meet"
-            xlinkHref={imageSrc}
-          />
-
-          {/* Display Sobel filtered image */}
-          <image
-            filter="url(#sobel)"
-            y="400"
-            width="400"
-            height="300"
-            xlinkHref={imageSrc}
-          />
-        </svg>
+    <div className="app-container">
+      {asciiArt ? (
+        <AsciiArt asciiArt={asciiArt} onBack={handleBackToInput} />
+      ) : isLoading ? (
+        <Loading />
+      ) : (
+        <ImageInput
+          imageUrlInput={imageUrlInput}
+          onUrlChange={handleUrlChange}
+          onUrlSubmit={handleUrlSubmit}
+          onFileChange={handleFileChange}
+        />
       )}
     </div>
   );
