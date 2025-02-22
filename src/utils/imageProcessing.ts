@@ -1,5 +1,3 @@
-import { removeBackground } from '@imgly/background-removal';
-
 const FONT_SIZE = 6; // Font size in pixels
 
 const calculateDimensions = (): { width: number; height: number } => {
@@ -116,14 +114,10 @@ export const processImage = async (
   setIsLoading(true);
 
   try {
-    const removedBlob = await removeBackground(
+    const url =
       imageSource instanceof Blob
-        ? imageSource
-        : await (await fetch(imageSource)).blob(),
-    );
-    if (!removedBlob) return setIsLoading(false);
-
-    const url = URL.createObjectURL(removedBlob);
+        ? URL.createObjectURL(imageSource)
+        : imageSource;
 
     const image = new Image();
     image.onload = () => {
