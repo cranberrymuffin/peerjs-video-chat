@@ -194,9 +194,9 @@ const VideoCall = () => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className="container">
       <h2>PeerJS Video Call</h2>
-      <div>
+      <div className="peer-id">
         <strong>Your ID:</strong> {peerId}
       </div>
       <input
@@ -204,59 +204,39 @@ const VideoCall = () => {
         value={remotePeerId}
         onChange={e => setRemotePeerId(e.target.value)}
         placeholder="Enter remote peer ID"
-        style={{
-          margin: '10px',
-          padding: '5px',
-          border: '1px solid #ccc',
-          borderRadius: '5px',
-        }}
+        className="input-field"
       />
-      <button onClick={callPeer} style={buttonStyle('blue')}>
+      <button onClick={callPeer} className="button blue">
         Call
       </button>
       {call && (
         <>
-          <button onClick={endCall} style={buttonStyle('red')}>
+          <button onClick={endCall} className="button red">
             End Call
           </button>
-          <button onClick={toggleMute} style={buttonStyle('gray')}>
+          <button onClick={toggleMute} className="button gray">
             {isMuted ? 'Unmute' : 'Mute'}
           </button>
-          <button onClick={toggleVideo} style={buttonStyle('purple')}>
+          <button onClick={toggleVideo} className="button purple">
             {isVideoHidden ? 'Show Video' : 'Hide Video'}
           </button>
-          <button onClick={toggleScreenShare} style={buttonStyle('green')}>
+          <button onClick={toggleScreenShare} className="button green">
             {isScreenSharing ? 'Stop Sharing' : 'Share Screen'}
           </button>
         </>
       )}
-      <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
+      <div className="video-container">
         <div>
           <h3>Local Video</h3>
-          <video ref={localVideoRef} autoPlay playsInline style={videoStyle} />
+          <video ref={localVideoRef} autoPlay playsInline className="video" />
         </div>
         <div>
           <h3>Remote Video</h3>
-          <video ref={remoteVideoRef} autoPlay playsInline style={videoStyle} />
+          <video ref={remoteVideoRef} autoPlay playsInline className="video" />
         </div>
       </div>
     </div>
   );
-};
-
-const buttonStyle = color => ({
-  padding: '5px 10px',
-  backgroundColor: color,
-  color: 'white',
-  border: 'none',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  marginLeft: '10px',
-});
-
-const videoStyle = {
-  width: '250px',
-  border: '1px solid black',
 };
 
 export default VideoCall;

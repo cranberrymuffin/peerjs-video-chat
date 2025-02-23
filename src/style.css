@@ -130,3 +130,60 @@ pre {
   letter-spacing: 0px;
   text-shadow: 1px 1px 2px hotpink;
 }
+
+/* VideoCall.css */
+
+.container {
+  padding: 20px;
+}
+
+.peer-id {
+  font-weight: bold;
+}
+
+.input-field {
+  margin: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.button {
+  padding: 5px 10px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.button.blue {
+  background-color: blue;
+}
+
+.button.red {
+  background-color: red;
+}
+
+.button.gray {
+  background-color: gray;
+}
+
+.button.purple {
+  background-color: purple;
+}
+
+.button.green {
+  background-color: green;
+}
+
+.video-container {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.video {
+  width: 250px;
+  border: 1px solid black;
+}
