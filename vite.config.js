@@ -4,7 +4,7 @@ import restart from 'vite-plugin-restart';
 
 export default {
   root: 'src/',
-  base: '/ascii-video/',
+  base: '/peerjs-video-chat/',
   publicDir: '../public/',
   plugins: [
     // Restart server on static/public file change
