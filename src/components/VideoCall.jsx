@@ -228,7 +228,13 @@ const VideoCall = () => {
       <div className="video-container">
         <div>
           <h3>Local Video</h3>
-          <video ref={localVideoRef} autoPlay playsInline className="video" />
+          <video
+            ref={localVideoRef}
+            autoPlay
+            muted
+            playsInline
+            className="video"
+          />
         </div>
         <div>
           <h3>Remote Video</h3>
