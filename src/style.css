@@ -19,14 +19,19 @@ body {
   margin-bottom: 10px;
 }
 
+.input {
+  display: flex;
+  justify-content: center; /* Ensures even spacing */
+  width: 100%;
+}
+
 .input-field {
   width: 100%;
   max-width: 300px;
-  margin: 10px auto;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  display: block;
+  box-sizing: border-box; /* Prevents width issues */
 }
 
 .button {
