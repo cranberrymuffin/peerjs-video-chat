@@ -49,6 +49,7 @@ const VideoCall = () => {
     });
 
     newPeer.on('disconnected', () => {
+      newPeer.reconnect();
       console.log('Peer disconnected');
       endCall();
     });
