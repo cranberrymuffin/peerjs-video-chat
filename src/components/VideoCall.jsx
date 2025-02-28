@@ -61,6 +61,7 @@ const VideoCall = () => {
     setPeer(newPeer);
 
     const handleUnload = () => {
+      console.log('peer unload');
       endCall();
       newPeer.destroy();
     };
@@ -70,7 +71,7 @@ const VideoCall = () => {
         console.log('Tab is active again, checking PeerJS connection...');
         if (peer.disconnected) {
           console.log('Reconnecting Peer...');
-          peer.reconnect();
+          newPeer.reconnect();
         }
       }
     };
