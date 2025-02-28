@@ -23,7 +23,7 @@ const VideoCall = () => {
     });
   }, [call]);
 
-  useEffect(() => {
+  const createPeer = () => {
     const newPeer = new Peer();
 
     newPeer.on('open', id => {
@@ -51,6 +51,7 @@ const VideoCall = () => {
     newPeer.on('disconnected', () => {
       console.log('Peer disconnected');
       endCall();
+      newPeer.reconnect();
     });
 
     newPeer.on('close', () => {
@@ -59,31 +60,30 @@ const VideoCall = () => {
     });
 
     setPeer(newPeer);
+  };
+
+  useEffect(() => {
+    createPeer();
+  }, []);
+
+  useEffect(() => {
+    if (!peer) {
+      console.log('peer does not exist, creating one');
+      createPeer();
+    }
 
     const handleUnload = () => {
-      console.log('peer unload');
       endCall();
-      newPeer.destroy();
+      peer?.destroy();
     };
 
-    const onVisibilityChange = () => {
-      if (!document.hidden) {
-        console.log('Tab is active again, checking PeerJS connection...');
-        if (newPeer.disconnected) {
-          console.log('Reconnecting Peer...');
-          newPeer.reconnect();
-        }
-      }
-    };
-    document.addEventListener('visibilitychange', onVisibilityChange);
     window.addEventListener('beforeunload', handleUnload);
 
     return () => {
-      document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('beforeunload', handleUnload);
-      newPeer.destroy();
+      peer?.destroy();
     };
-  }, []);
+  }, [peer]);
 
   const callPeer = () => {
     if (!peer || !remotePeerId) return;
