@@ -56,6 +56,8 @@ const VideoCall = () => {
     newPeer.on('close', () => {
       console.log('Peer connection closed');
       endCall();
+      setPeer(null);
+      setPeerId(null);
     });
 
     setPeer(newPeer);
@@ -63,6 +65,8 @@ const VideoCall = () => {
     const handleUnload = () => {
       endCall();
       newPeer.destroy();
+      setPeer(null);
+      setPeerId(null);
     };
 
     window.addEventListener('beforeunload', handleUnload);
@@ -113,7 +117,7 @@ const VideoCall = () => {
     if (remoteVideoRef.current) {
       remoteVideoRef.current.srcObject = null;
     }
-
+    setCall(null);
     setIsMuted(false);
     setIsVideoHidden(false);
     setIsScreenSharing(false);
