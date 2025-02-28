@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@imgly/background-removal": "^1.5.8",
+    "lucide-react": "^0.477.0",
     "peerjs": "^1.5.4",
     "react": "18.3",
     "react-dom": "18.3",

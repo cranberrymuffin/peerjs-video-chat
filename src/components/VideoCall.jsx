@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Peer from 'peerjs';
+import { Clipboard } from 'lucide-react';
 
 const VideoCall = () => {
   const [peerId, setPeerId] = useState(null);
@@ -14,6 +15,14 @@ const VideoCall = () => {
   const remoteVideoRef = useRef(null);
   const localStreamRef = useRef(null);
   const screenStreamRef = useRef(null);
+  const copyToClipboard = () => {
+    if (peerId) {
+      navigator.clipboard
+        .writeText(peerId)
+        .then(() => alert('Peer ID copied to clipboard!'))
+        .catch(err => console.error('Failed to copy:', err));
+    }
+  };
 
   useEffect(() => {
     call?.on('close', () => {
@@ -203,6 +212,9 @@ const VideoCall = () => {
       <h2>PeerJS Video Call</h2>
       <div className="peer-id">
         <strong>Your ID:</strong> {peerId}
+        <button onClick={copyToClipboard} className="icon-button">
+          <Clipboard size={20} />
+        </button>
       </div>
       <input
         type="text"
