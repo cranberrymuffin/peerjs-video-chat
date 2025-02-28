@@ -65,9 +65,20 @@ const VideoCall = () => {
       newPeer.destroy();
     };
 
+    const onVisibilityChange = () => {
+      if (!document.hidden) {
+        console.log('Tab is active again, checking PeerJS connection...');
+        if (peer.disconnected) {
+          console.log('Reconnecting Peer...');
+          peer.reconnect();
+        }
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
     window.addEventListener('beforeunload', handleUnload);
 
     return () => {
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('beforeunload', handleUnload);
       newPeer.destroy();
     };
