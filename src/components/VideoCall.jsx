@@ -69,7 +69,7 @@ const VideoCall = () => {
     const onVisibilityChange = () => {
       if (!document.hidden) {
         console.log('Tab is active again, checking PeerJS connection...');
-        if (peer.disconnected) {
+        if (newPeer.disconnected) {
           console.log('Reconnecting Peer...');
           newPeer.reconnect();
         }
