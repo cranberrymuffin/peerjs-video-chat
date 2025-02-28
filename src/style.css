@@ -9,7 +9,6 @@ body {
 
 .container {
   padding: 20px;
-  max-width: 600px;
   margin: auto;
   text-align: center;
 }
@@ -79,7 +78,6 @@ body {
 }
 
 .video {
-  width: 250px;
   max-width: 100%;
   border: 1px solid black;
 }

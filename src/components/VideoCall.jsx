@@ -210,6 +210,10 @@ const VideoCall = () => {
   return (
     <div className="container">
       <h2>PeerJS Video Call</h2>
+      <i>
+        How to use: Share your Peer ID with a friend. They should enter it in
+        the field below and press 'Call' to start a video chat.
+      </i>
       <div className="peer-id">
         <strong>Your ID:</strong> {peerId}
         <button onClick={copyToClipboard} className="icon-button">
