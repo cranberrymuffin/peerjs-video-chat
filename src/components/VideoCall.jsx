@@ -23,7 +23,7 @@ const VideoCall = () => {
     });
   }, [call]);
 
-  const createPeer = () => {
+  useEffect(() => {
     const newPeer = new Peer();
 
     newPeer.on('open', id => {
@@ -51,7 +51,6 @@ const VideoCall = () => {
     newPeer.on('disconnected', () => {
       console.log('Peer disconnected');
       endCall();
-      newPeer.reconnect();
     });
 
     newPeer.on('close', () => {
@@ -60,30 +59,19 @@ const VideoCall = () => {
     });
 
     setPeer(newPeer);
-  };
-
-  useEffect(() => {
-    createPeer();
-  }, []);
-
-  useEffect(() => {
-    if (!peer) {
-      console.log('peer does not exist, creating one');
-      createPeer();
-    }
 
     const handleUnload = () => {
       endCall();
-      peer?.destroy();
+      newPeer.destroy();
     };
 
     window.addEventListener('beforeunload', handleUnload);
 
     return () => {
       window.removeEventListener('beforeunload', handleUnload);
-      peer?.destroy();
+      newPeer.destroy();
     };
-  }, [peer]);
+  }, []);
 
   const callPeer = () => {
     if (!peer || !remotePeerId) return;
