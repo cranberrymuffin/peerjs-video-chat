@@ -4,14 +4,16 @@
 
 | Question | Answer |
 |---|---|
-| Scope | Both videos on the toggling peer's screen; only the remote feed on the other peer's screen |
+| Scope | Only the toggling peer's own feed: their local video + the remote peer's remote video (which shows them) |
 | Implementation | CSS `filter: grayscale(1)` + PeerJS data channel to sync state |
 | Button placement | In-call only (alongside Mute, Hide Video, Share Screen) |
-| Sync behavior | Peer A toggles B&W → both Peer A's videos go B&W; on Peer B's screen only Peer A's (remote) video goes B&W — Peer B's own local video is unaffected |
+| Sync behavior | Each peer controls only their own B&W state. Toggling affects only your own local video; the remote peer's remote feed (showing you) also goes B&W via data channel — nothing else changes. |
 
 ---
 
 ## Visual behavior
+
+Each peer has their own toggle. A peer can only toggle their own filter — not the other's.
 
 ```
 Peer A toggles B&W ON:
@@ -22,8 +24,32 @@ Peer A toggles B&W ON:
   │ (Peer A) │            │ (Peer B) │
   └──────────┘            └──────────┘
   ┌──────────┐            ┌──────────┐
-  │ Remote   │ ← B&W      │ Remote   │ ← B&W (synced via data channel)
-  │ (Peer B) │            │ (Peer A) │
+  │ Remote   │ ← color    │ Remote   │ ← B&W (synced via data channel)
+  │ (Peer B) │ (unchanged)│ (Peer A) │
+  └──────────┘            └──────────┘
+
+Peer B toggles B&W ON (independently):
+
+  Peer A's screen          Peer B's screen
+  ┌──────────┐            ┌──────────┐
+  │ Local    │ ← color    │ Local    │ ← B&W
+  │ (Peer A) │ (unchanged)│ (Peer B) │
+  └──────────┘            └──────────┘
+  ┌──────────┐            ┌──────────┐
+  │ Remote   │ ← B&W      │ Remote   │ ← color (unchanged)
+  │ (Peer B) │ (synced)   │ (Peer A) │
+  └──────────┘            └──────────┘
+
+Both peers toggle B&W ON:
+
+  Peer A's screen          Peer B's screen
+  ┌──────────┐            ┌──────────┐
+  │ Local    │ ← B&W      │ Local    │ ← B&W
+  │ (Peer A) │            │ (Peer B) │
+  └──────────┘            └──────────┘
+  ┌──────────┐            ┌──────────┐
+  │ Remote   │ ← B&W      │ Remote   │ ← B&W
+  │ (Peer B) │ (synced)   │ (Peer A) │ (synced)
   └──────────┘            └──────────┘
 ```
 
@@ -57,10 +83,10 @@ Reset both to `false` in `endCall()`.
   ...
 />
 
-// Remote video — B&W when either peer has toggled it
+// Remote video — B&W only when the remote peer has toggled their own filter
 <video
   ref={remoteVideoRef}
-  style={isLocalBW || isRemoteBW ? { filter: 'grayscale(1)' } : {}}
+  style={isRemoteBW ? { filter: 'grayscale(1)' } : {}}
   ...
 />
 ```
