@@ -18,7 +18,7 @@ const VideoCall = () => {
   const localStreamRef = useRef(null);
   const screenStreamRef = useRef(null);
   const dataConnRef = useRef(null);
-  const handleRemoteData = (data) => {
+  const handleRemoteData = data => {
     if (data?.type === 'bw-filter') {
       setIsRemoteBW(data.enabled);
     }
@@ -124,7 +124,9 @@ const VideoCall = () => {
         });
 
         const dataConn = peer.connect(remotePeerId);
-        dataConn.on('open', () => { dataConnRef.current = dataConn; });
+        dataConn.on('open', () => {
+          dataConnRef.current = dataConn;
+        });
         dataConn.on('data', handleRemoteData);
 
         setCall(outgoingCall);
@@ -289,7 +291,13 @@ const VideoCall = () => {
         </div>
         <div>
           <h3>Remote Video</h3>
-          <video ref={remoteVideoRef} autoPlay playsInline className="video" style={isRemoteBW ? { filter: 'grayscale(1)' } : {}} />
+          <video
+            ref={remoteVideoRef}
+            autoPlay
+            playsInline
+            className="video"
+            style={isRemoteBW ? { filter: 'grayscale(1)' } : {}}
+          />
         </div>
       </div>
     </div>
