@@ -10,11 +10,26 @@ const VideoCall = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoHidden, setIsVideoHidden] = useState(false);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
+  const [isLocalBW, setIsLocalBW] = useState(false);
+  const [isRemoteBW, setIsRemoteBW] = useState(false);
 
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
   const localStreamRef = useRef(null);
   const screenStreamRef = useRef(null);
+  const dataConnRef = useRef(null);
+  const handleRemoteData = data => {
+    if (data?.type === 'bw-filter') {
+      setIsRemoteBW(data.enabled);
+    }
+  };
+
+  const toggleBWFilter = () => {
+    const next = !isLocalBW;
+    setIsLocalBW(next);
+    dataConnRef.current?.send({ type: 'bw-filter', enabled: next });
+  };
+
   const copyToClipboard = () => {
     if (peerId) {
       navigator.clipboard
@@ -55,6 +70,11 @@ const VideoCall = () => {
 
           setCall(incomingCall);
         });
+    });
+
+    newPeer.on('connection', dataConn => {
+      dataConnRef.current = dataConn;
+      dataConn.on('data', handleRemoteData);
     });
 
     newPeer.on('disconnected', () => {
@@ -103,6 +123,12 @@ const VideoCall = () => {
             remoteVideoRef.current.srcObject = remoteStream;
         });
 
+        const dataConn = peer.connect(remotePeerId);
+        dataConn.on('open', () => {
+          dataConnRef.current = dataConn;
+        });
+        dataConn.on('data', handleRemoteData);
+
         setCall(outgoingCall);
       });
   };
@@ -131,6 +157,8 @@ const VideoCall = () => {
     setIsMuted(false);
     setIsVideoHidden(false);
     setIsScreenSharing(false);
+    setIsLocalBW(false);
+    setIsRemoteBW(false);
   };
 
   const toggleMute = () => {
@@ -244,6 +272,9 @@ const VideoCall = () => {
           <button onClick={toggleScreenShare} className="button green">
             {isScreenSharing ? 'Stop Sharing' : 'Share Screen'}
           </button>
+          <button onClick={toggleBWFilter} className="button black">
+            {isLocalBW ? 'Color' : 'B&W'}
+          </button>
         </>
       )}
       <div className="video-container">
@@ -255,11 +286,18 @@ const VideoCall = () => {
             muted
             playsInline
             className="video"
+            style={isLocalBW ? { filter: 'grayscale(1)' } : {}}
           />
         </div>
         <div>
           <h3>Remote Video</h3>
-          <video ref={remoteVideoRef} autoPlay playsInline className="video" />
+          <video
+            ref={remoteVideoRef}
+            autoPlay
+            playsInline
+            className="video"
+            style={isRemoteBW ? { filter: 'grayscale(1)' } : {}}
+          />
         </div>
       </div>
     </div>

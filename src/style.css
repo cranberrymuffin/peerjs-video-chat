@@ -63,6 +63,10 @@ body {
   background-color: green;
 }
 
+.button.black {
+  background-color: #222;
+}
+
 /* Ensure side-by-side layout for videos on desktop */
 .video-container {
   display: flex;
